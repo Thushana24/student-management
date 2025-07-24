@@ -1,12 +1,13 @@
 "use client";
+import { ReactNode } from "react";
 import Header from "./_components/Header";
 import SideNav from "./_components/SideNav";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       {/* Sidebar */}
-      <div className="hidden md:block w-64 fixed h-full">
+      <div className="fixed hidden w-64 h-full md:block">
         <SideNav />
       </div>
 

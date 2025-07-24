@@ -33,9 +33,9 @@ const SideNav = () => {
     },
   ];
   return (
-    <div className="p-5 border rounded-md shadow-md h-dvh">
+    <div className="p-4 border rounded-md shadow-md h-dvh">
       <div className="flex items-center justify-center w-full space-x-2">
-        <Image src={"/logo.svg"} width={40} height={10} alt="logo" />
+        <Image src={"/logo.svg"} width={30} height={10} alt="logo" />
         <h1 className="text-2xl font-bold text-purple-900 dark:text-white">
           RoLL CaLL
         </h1>

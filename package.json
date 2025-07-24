@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "migrate": "npx prisma db push && npx prisma generate",
     "create-diff:win": "@powershell -NoProfile -Command \"    git diff --cached -- . ':^node_modules' ':^package-lock.json' ':^src/app/fonts' ':^public' | Out-File -Encoding utf8 -FilePath $env:USERPROFILE\\Desktop\\diff.txt;     git ls-files --others --exclude-standard ':!node_modules/*' ':!package-lock.json' ':!src/app/fonts/*' ':!public/*' |     Where-Object { Test-Path $_ } |     ForEach-Object {       '+++ ' + $_ | Out-File -Append -Encoding utf8 -FilePath $env:USERPROFILE\\Desktop\\diff.txt;       Get-Content $_ | Out-File -Append -Encoding utf8 -FilePath $env:USERPROFILE\\Desktop\\diff.txt     }\""
   },
   "dependencies": {
@@ -22,7 +23,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.1",
-    "zod": "^4.0.5"
+    "zod": "^4.0.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
@@ -33,6 +34,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "prisma": "^6.12.0",
     "tailwindcss": "^4.1.11",
+    "tsx": "^4.20.3",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"
   }
