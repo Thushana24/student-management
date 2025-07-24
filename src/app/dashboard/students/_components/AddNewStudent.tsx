@@ -22,11 +22,19 @@ import {
 import { calculateAge } from "../_helpers/dateUtils";
 import { DISTRICTS } from "../_helpers/districts";
 import { Save } from "lucide-react";
+import { FACULTIES, DEPARTMENTS, BATCHES } from "../_helpers/mockData";
+
+// Define FacultyKey as keys of DEPARTMENTS
+type FacultyKey = keyof typeof DEPARTMENTS;
 
 const AddNewStudent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [birthDate, setBirthDate] = useState("");
   const [age, setAge] = useState<number | null>(null);
+
+  // Make sure selectedFaculty has type FacultyKey or empty string
+  const [selectedFaculty, setSelectedFaculty] = useState<FacultyKey | "">("");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
   const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -34,6 +42,11 @@ const AddNewStudent = () => {
     const calculatedAge = calculateAge(value);
     setAge(calculatedAge);
   };
+
+  // Get departments list safely with type assertion
+  const departmentList: string[] = selectedFaculty
+    ? DEPARTMENTS[selectedFaculty]
+    : [];
 
   return (
     <div>
@@ -44,7 +57,7 @@ const AddNewStudent = () => {
           <DialogHeader>
             <DialogTitle>Add New Student</DialogTitle>
             <DialogDescription>
-              <div className="py-2 space-y-3">
+              <div className="py-2 space-y-3 max-h-[500px] overflow-y-auto">
                 <div>
                   <Label>Student Code</Label>
                   <Input value="STU_0001" readOnly />
@@ -64,18 +77,69 @@ const AddNewStudent = () => {
                     <Input />
                   </div>
                 </div>
+
+                {/* Faculty Dropdown */}
                 <div>
-                  <Label>Grade</Label>
-                  <Select>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select d Grade" />
+                  <Label>Faculty</Label>
+                  <Select
+                    onValueChange={(val) => {
+                      setSelectedFaculty(val as FacultyKey);
+                      setSelectedDepartment(""); // reset department on faculty change
+                    }}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Faculty" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Grades</SelectLabel>
-                        <SelectItem value="19/20">19/20</SelectItem>
-                        <SelectItem value="20/21">20/21</SelectItem>
-                        <SelectItem value="21/22">21/22</SelectItem>
+                        {FACULTIES.map((faculty) => (
+                          <SelectItem key={faculty} value={faculty}>
+                            {faculty}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Department Dropdown (Filtered by selected Faculty) */}
+                {selectedFaculty && (
+                  <div>
+                    <Label>Department</Label>
+                    <Select
+                      onValueChange={setSelectedDepartment}
+                      value={selectedDepartment}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select Department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {departmentList.map((dept) => (
+                            <SelectItem key={dept} value={dept}>
+                              {dept}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {/* Batch Dropdown */}
+                <div>
+                  <Label>Batch</Label>
+                  <Select>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Batch" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {BATCHES.map((batch) => (
+                          <SelectItem key={batch} value={batch}>
+                            {batch}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -132,6 +196,7 @@ const AddNewStudent = () => {
                   <Label>Contact No</Label>
                   <Input />
                 </div>
+
                 <div className="flex items-center justify-end w-full gap-2">
                   <Button onClick={() => setIsOpen(false)} variant="ghost">
                     Cancel

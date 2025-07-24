@@ -46,17 +46,17 @@ const SideNav = () => {
         {
           id: "5-1",
           name: "Faculties",
-          path: "/dashboard/faculties",
+          path: "/dashboard/academic/faculties",
         },
         {
           id: "5-2",
           name: "Departments",
-          path: "/dashboard/departments",
+          path: "/dashboard/academic/departments",
         },
         {
           id: "5-3",
           name: "Batches",
-          path: "/dashboard/batches",
+          path: "/dashboard/academic/batches",
         },
       ],
     },
