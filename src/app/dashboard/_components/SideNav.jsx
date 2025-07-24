@@ -1,7 +1,14 @@
 "use client";
 import Image from "next/image";
-import { GraduationCap, Hand, Layers2Icon, SettingsIcon } from "lucide-react";
+import {
+  BookAIcon,
+  GraduationCap,
+  Hand,
+  Layers2Icon,
+  SettingsIcon,
+} from "lucide-react";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import Link from "next/link";
 
 const SideNav = () => {
   const { user } = useKindeBrowserClient();
@@ -31,6 +38,28 @@ const SideNav = () => {
       icon: SettingsIcon,
       path: "/dashboard/settings",
     },
+    {
+      id: 5,
+      name: "Academic",
+      icon: BookAIcon,
+      children: [
+        {
+          id: "5-1",
+          name: "Faculties",
+          path: "/dashboard/faculties",
+        },
+        {
+          id: "5-2",
+          name: "Departments",
+          path: "/dashboard/departments",
+        },
+        {
+          id: "5-3",
+          name: "Batches",
+          path: "/dashboard/batches",
+        },
+      ],
+    },
   ];
   return (
     <div className="p-4 border rounded-md shadow-md h-dvh">
@@ -42,15 +71,32 @@ const SideNav = () => {
       </div>
       <hr className="my-5 shadow-sm" />
 
-      {menuList.map((menu, index) => (
-        <div
-          key={index}
-          className="flex items-center justify-start gap-5 p-3 font-semibold text-purple-900 transition-all duration-500 ease-in-out cursor-pointer dark:text-white hover:text-white text-md hover:bg-purple-900/90 hover:rounded-lg"
-        >
-          <menu.icon />
-          {menu.name}
-        </div>
-      ))}
+      {menuList.map((menu, index) =>
+        menu.children ? (
+          <div key={index} className="w-full">
+            <div className="flex items-center gap-5 p-3 font-semibold text-purple-900 dark:text-white">
+              <menu.icon />
+              {menu.name}
+            </div>
+            <div className="ml-8 space-y-2">
+              {menu.children.map((child, childIndex) => (
+                <Link key={childIndex} href={child.path}>
+                  <div className="flex items-center gap-4 p-2 font-medium text-purple-800 transition hover:bg-purple-900/90 hover:text-white hover:rounded-lg dark:text-white">
+                    ▸ {child.name}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <Link key={index} href={menu.path}>
+            <div className="flex items-center justify-start gap-5 p-3 font-semibold text-purple-900 transition-all duration-500 ease-in-out cursor-pointer dark:text-white hover:text-white text-md hover:bg-purple-900/90 hover:rounded-lg">
+              <menu.icon />
+              {menu.name}
+            </div>
+          </Link>
+        )
+      )}
 
       <div className="fixed flex items-center gap-2 p-2 bottom-5">
         {user?.picture ? (
